@@ -5,9 +5,9 @@ from wcapi.types.methods import (
     POST,
     DELETE,
     PUT,
-    PATCH
+    PATCH,
+    getmethod
 )
 from wcapi.types.blueprints import (
     BluePrint, 
-    NodeMeta
 )

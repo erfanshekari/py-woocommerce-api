@@ -1,3 +1,4 @@
+import pprint
 from wcapi.types import (
     WooCommerceSite
 )
@@ -40,7 +41,8 @@ class WooCommerceAPI:
         routes = self._index.get('routes')
         
         if isinstance(routes, dict):
-            build_tree(self, routes)
+            tree = build_tree(routes)
+            pprint.pprint(tree)
         else:
             raise BuildAPIError("No routes in _index")
 

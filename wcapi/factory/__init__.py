@@ -1,31 +1,33 @@
-from wcapi.types import (
-    Node,
-    GET,
-    POST,
-    PUT,
-    PATCH,
-    DELETE,
-)
-from wcapi.utils import make_path_of_node
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from wcapi import WooCommerceAPI
+from wcapi.types import BluePrint
+from wcapi.utils import make_path_of_node, get_args_of
+from typing import Set
 
 
-def get_method(method_name_upper:str) -> object:
-    if method_name_upper == 'GET': return GET
-    if method_name_upper == 'POST': return POST
-    if method_name_upper == 'PUT': return PUT
-    if method_name_upper == 'PATCH': return PATCH
-    if method_name_upper == 'DELETE': return DELETE
 
+def add_attrs(path:str, name:str, current:BluePrint, details: dict) -> None:
+    args = get_args_of(path, name)
+    if args:
+        init_kwargs: Set[str] = current.get('init_kwargs')
+        if init_kwargs:
+            init_kwargs.union(set(args))
+        else:
+            init_kwargs = set(args)
+        current['init_kwargs'] = init_kwargs
+    
+    if not current.get('endpoints'):
+        current.update({'endpoints': {
+            'methods': set(),
+            'args': []
+        }})
 
-def build_tree(base: 'WooCommerceAPI', routes: dict) -> ...:
+    current['endpoints']['methods'] = current['endpoints']['methods'].union(set(details['methods']))
+    current['endpoints'].update({'args': current['endpoints']['args'] + details['endpoints']})
 
-    tree = {}  
+def build_tree(routes: dict) -> ...:
+
+    tree = {}
 
     for path, details in routes.items():
-
         current = None
         for depth in make_path_of_node(path):
             if not current:
@@ -33,8 +35,9 @@ def build_tree(base: 'WooCommerceAPI', routes: dict) -> ...:
 
             if current.get(depth['class_name']):
                 current = current.get(depth['class_name'])
+                add_attrs(path, depth['name'], current, details)
             else:
                 current[depth['class_name']] = depth
-
-
-    print(tree['Data'])
+                add_attrs(path, depth['name'], current[depth['class_name']], details)
+                
+    return tree

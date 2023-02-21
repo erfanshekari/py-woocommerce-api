@@ -1,6 +1,8 @@
-import pprint
 from wcapi.types import (
-    WooCommerceSite
+    WooCommerceSite,
+    BluePrint,
+    Node,
+    getmethods
 )
 from wcapi.exceptions import (
     UnsupportedWooCommerceVesrion,
@@ -9,7 +11,8 @@ from wcapi.exceptions import (
 )
 from requests_oauthlib import OAuth1Session
 from urllib import parse as parse_url
-from wcapi.factory import build_tree
+from  wcapi.factory import build_tree
+from typing import List
 
 
 class WooCommerceAPI:
@@ -36,13 +39,36 @@ class WooCommerceAPI:
 
 
     def _build(self) -> None:
-        self._resolve_index()
+        def factory(node_tree: dict[str, BluePrint], base: object) -> List[Node]:
+            clss = []
 
+            def build_chain(name, blueprint: BluePrint, parent = None) -> Node:
+                cls = type(name, (Node,), dict({
+                    '_': blueprint,
+                    'parent': parent
+                }))
+                for key, val in blueprint.items():
+                    if key[0].isupper():
+                        val = build_chain(key, val, cls)
+                        cls = type(name, (cls, ), dict({key: val}))
+
+                cls = type(name, (cls, ) + tuple(getmethods(blueprint['endpoints']['methods'])), dict())
+
+                return cls
+
+            for name, blueprint in node_tree.items():
+                clss.append(build_chain(name, blueprint, base))
+
+            return clss
+        
+        self._resolve_index()
         routes = self._index.get('routes')
         
         if isinstance(routes, dict):
             tree = build_tree(routes)
-            pprint.pprint(tree)
+            nodes = factory(tree, self)
+            for node in nodes:
+                setattr(self, node._['class_name'], node)
         else:
             raise BuildAPIError("No routes in _index")
 

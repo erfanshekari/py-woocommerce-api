@@ -1,30 +1,32 @@
 from wcapi.exceptions import (
     HTTPMethodNotDefiend
 )
+from typing import List
 
-class Method:
-    def _handle_method(method:str, *args, **kwargs) -> ...:...
-
-class GET(Method):
+class GET:
+    @classmethod
     def GET(*args, **kwargs) -> ...:
-        GET()._handle_method('GET', *args, **kwargs)
+        ...
 
-class POST(Method):
+class POST:
+    @classmethod
     def POST(*args, **kwargs) -> ...:
-        POST()._handle_method('POST', *args, **kwargs)
+        ...
 
-class PUT(Method):
+class PUT:
+    @classmethod
     def PUT(*args, **kwargs) -> ...:
-        PUT()._handle_method('PUT', *args, **kwargs)
+        ...
 
-class PATCH(Method):
+class PATCH:
+    @classmethod
     def PATCH(*args, **kwargs) -> ...:
-        PATCH()._handle_method('PATCH', *args, **kwargs)
+        ...
 
-class DELETE(Method):
+class DELETE:
+    @classmethod
     def DELETE(*args, **kwargs) -> ...:
-        DELETE()._handle_method('DELETE', *args, **kwargs)
-
+        ...
 
 def getmethod(method:str) -> object:
     if method == 'GET': return GET
@@ -33,3 +35,11 @@ def getmethod(method:str) -> object:
     if method == 'PATCH': return PATCH
     if method == 'DELETE': return DELETE
     raise HTTPMethodNotDefiend(f'Method {method} not implemented')
+
+def getmethods(methods:List[str]) -> List[object]:
+    methods_ = []
+    for method in methods:
+        mtd = getmethod(method)
+        if mtd:
+            methods_.append(mtd)
+    return methods_

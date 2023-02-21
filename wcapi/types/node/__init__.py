@@ -7,9 +7,7 @@ from wcapi.exceptions import (
 class Node:
 
     _: BluePrint
-    main: Any
     parent: Any
-    name: str
 
     def __init__(self, *args, **kwargs) -> None:
         pass

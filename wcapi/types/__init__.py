@@ -6,7 +6,8 @@ from wcapi.types.methods import (
     DELETE,
     PUT,
     PATCH,
-    getmethod
+    getmethod,
+    getmethods
 )
 from wcapi.types.blueprints import (
     BluePrint, 

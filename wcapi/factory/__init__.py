@@ -1,9 +1,17 @@
 from wcapi.types import BluePrint
 from wcapi.utils import make_path_of_node, get_args_of
-from typing import Set
+from typing import Set, List, Tuple
 from wcapi.types import (
     BluePrint
 )
+
+def sort_routes(routes: dict) -> List[Tuple[str, dict]]:
+    keys = [key for key in routes.keys()]
+    keys.sort()
+    routes_ = []
+    for key in keys:
+        routes_.append((key, routes[key]))
+    return routes_
 
 def add_attrs(path:str, name:str, current:BluePrint, details: dict) -> None:
     args = get_args_of(path, name)
@@ -26,9 +34,11 @@ def add_attrs(path:str, name:str, current:BluePrint, details: dict) -> None:
 
 def build_tree(routes: dict) -> dict[str, BluePrint]:
 
+    routes = sort_routes(routes)
+    
     tree = {}
 
-    for path, details in routes.items():
+    for path, details in routes:
         current = None
         for depth in make_path_of_node(path):
             if not current:

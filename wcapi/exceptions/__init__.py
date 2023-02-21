@@ -4,6 +4,4 @@ class FaildGETIndex(Exception):pass
 
 class BuildAPIError(Exception):pass
 
-class NotEnoughKwargs(Exception):pass
-
 class HTTPMethodNotDefiend(Exception):pass

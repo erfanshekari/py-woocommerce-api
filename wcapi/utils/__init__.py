@@ -21,8 +21,7 @@ def get_args_of(pattern:str, name:str) -> str:
                     if args:
                         args = []
             break
-    return args
-        
+    return args    
 
 def make_path_of_node(pattern:str) -> List[BluePrint]:
     pattern = pattern.replace('/wc/v3/', '').replace('/wc/v3', '')

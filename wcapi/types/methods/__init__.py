@@ -5,28 +5,28 @@ from typing import List
 
 class GET:
     @classmethod
-    def GET(*args, **kwargs) -> ...:
-        ...
+    def GET(cls, **kwargs) -> ...:
+        cls.handle_http_method('GET', **kwargs)
 
 class POST:
     @classmethod
-    def POST(*args, **kwargs) -> ...:
-        ...
+    def POST(cls, **kwargs) -> ...:
+        cls.handle_http_method('POST', **kwargs)
 
 class PUT:
     @classmethod
-    def PUT(*args, **kwargs) -> ...:
-        ...
+    def PUT(cls, **kwargs) -> ...:
+        cls.handle_http_method('PUT', **kwargs)
 
 class PATCH:
     @classmethod
-    def PATCH(*args, **kwargs) -> ...:
-        ...
+    def PATCH(cls, **kwargs) -> ...:
+        cls.handle_http_method('PATCH', **kwargs)
 
 class DELETE:
     @classmethod
-    def DELETE(*args, **kwargs) -> ...:
-        ...
+    def DELETE(cls, **kwargs) -> ...:
+        cls.handle_http_method('DELETE', **kwargs)
 
 def getmethod(method:str) -> object:
     if method == 'GET': return GET

@@ -12,5 +12,4 @@ class BluePrint(TypedDict):
     class_name:str
     name:str
     path: Union[str, None]
-    init_kwargs: Union[Set[str], None]
     endpoints: Endpoints

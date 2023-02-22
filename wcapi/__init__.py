@@ -13,6 +13,7 @@ from requests_oauthlib import OAuth1Session
 from urllib import parse as parse_url
 from  wcapi.factory import build_tree
 from typing import List
+from wcapi.request import Request
 
 
 class WooCommerceAPI:
@@ -43,7 +44,7 @@ class WooCommerceAPI:
             clss = []
 
             def build_chain(name, blueprint: BluePrint, parent = None) -> Node:
-                cls = type(name, (Node,), dict({
+                cls = type(name, (Node, Request, ), dict({
                     '_': blueprint,
                     'parent': parent
                 }))

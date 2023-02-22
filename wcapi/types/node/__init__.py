@@ -12,7 +12,3 @@ class Node:
     def __init__(self, *args, **kwargs) -> None:
         self.init_inputs = (args, kwargs)
     
-    @classmethod
-    def handle_http_method(cls, method, **kwargs) -> Any:
-        print(method, kwargs, cls._.get('init_kwargs'))
-        

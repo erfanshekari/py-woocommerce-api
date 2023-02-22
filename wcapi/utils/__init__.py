@@ -1,8 +1,12 @@
 import re, base64
-from typing import List
+from typing import List, Set
 from wcapi.types.blueprints import BluePrint
 
 string_to_base64 = lambda x: base64.b64encode(x.encode('ascii')).decode('ascii')
+
+def build_url(path: str, obj: object):
+    pass
+
 
 def classify_name(name:str) -> str:
     return "".join([n.capitalize() for n in name.split('_')])
